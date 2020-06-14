@@ -1,6 +1,7 @@
 #COVID DASHBOARD
 
 ## Introdução
+
 Trabalho realizado durante a disciplina de Laboratório de Bases de Dados - SCC0541, oferecida ao curso de Sistemas de Informação na USP de São Carlos. A ideia é simular um programa fictício encomendado pela OMS que gerencia dados relacionados à pandemia do COVID-19, como hospitais, leitos disponíveis/ocupados, testes em pacientes, entre outras funcionalidades.
 ---
 ## Dependências
