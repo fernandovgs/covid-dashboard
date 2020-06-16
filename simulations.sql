@@ -1,5 +1,7 @@
 -- DROP FUNCTION simulacao_medicina();
 -- DROP FUNCTION destruir_simulacao_medicina();
+-- DROP FUNCTION simulacao_pesquisa();
+-- DROP FUNCTION destruir_simulacao_pesquisa();
 
 CREATE OR REPLACE FUNCTION simulacao_medicina() RETURNS VOID AS '
     BEGIN
@@ -33,4 +35,26 @@ CREATE OR REPLACE FUNCTION destruir_simulacao_medicina() RETURNS VOID AS '
     END;
 ' LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION simulacao_pesquisa() RETURNS VOID AS '
+    BEGIN
+        CREATE TABLE amostra_sim AS TABLE amostra;
 
+        ALTER TABLE amostra_sim ADD CONSTRAINT amostra_sim_pk PRIMARY KEY (id_amostra);
+        ALTER TABLE amostra_sim ADD CONSTRAINT id_laboratorio_amostra_sim_fk FOREIGN KEY (id_laboratorio)
+            REFERENCES public.laboratorio (id_laboratorio) MATCH SIMPLE
+            ON UPDATE NO ACTION ON DELETE CASCADE;
+        ALTER TABLE amostra_sim ADD CONSTRAINT id_paciente_amostra_sim_fk FOREIGN KEY (id_paciente)
+            REFERENCES public.paciente (id_paciente) MATCH SIMPLE
+            ON UPDATE NO ACTION ON DELETE CASCADE;
+        ALTER TABLE amostra_sim ADD CONSTRAINT id_pesquisador_amostra_sim_fk FOREIGN KEY (id_pesquisador)
+            REFERENCES public.pesquisador (id_pesquisador) MATCH SIMPLE
+            ON UPDATE NO ACTION ON DELETE CASCADE;
+    END;
+'
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION destruir_simulacao_pesquisa() RETURNS VOID AS '
+    BEGIN
+        DROP TABLE amostra_sim;
+    END;
+' LANGUAGE plpgsql;
