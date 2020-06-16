@@ -1,10 +1,16 @@
-DROP FUNCTION historico_pessoal();
-DROP FUNCTION historico_hospital();
-DROP FUNCTION historico_municipios();
+-- DROP FUNCTION historico_pessoal();
+-- DROP FUNCTION historico_hospital();
+-- DROP FUNCTION historico_municipios();
+-- DROP FUNCTION historico_amostras();
+-- DROP FUNCTION historico_laboratorios();
+-- DROP FUNCTION historico_pesquisadores();
 
-DROP TYPE relatorio_um;
-DROP TYPE relatorio_dois;
-DROP TYPE relatorio_tres;
+-- DROP TYPE relatorio_um;
+-- DROP TYPE relatorio_dois;
+-- DROP TYPE relatorio_tres;
+-- DROP TYPE relatorio_quatro;
+-- DROP TYPE relatorio_cinco;
+-- DROP TYPE relatorio_seis;
 
 CREATE TYPE relatorio_um AS 
     (nome varchar, idade int, genero char, data_nasc date, telefones text, endereco text, hospital varchar);
@@ -29,6 +35,24 @@ CREATE TYPE relatorio_tres AS
     qtde_atendimentos_nov bigint,
     qtde_atendimentos_dez bigint);
 
+CREATE TYPE relatorio_quatro AS (
+    nome varchar,
+    idade int,
+    genero char,
+    endereco text,
+    data_amostra date,
+    resultado char,
+    laboratorio varchar);
+
+CREATE TYPE relatorio_cinco AS (nome varchar, qtd_pesquisadores int, endereco text, amostras bigint);
+
+CREATE TYPE relatorio_seis AS (
+    nome varchar,
+    registro_institucional int,
+    data_contratacao date,
+    id_amostra int,
+    data_amostra date,
+    resultado char);
 
 CREATE OR REPLACE FUNCTION historico_pessoal()
 RETURNS SETOF relatorio_um AS '
@@ -300,6 +324,73 @@ BEGIN
             GROUP BY HOS.cidade
         ) TOTAL_DEZ
     ON TOTAL."Cidade" = TOTAL_DEZ."Cidade";
+END;
+'
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION historico_amostras()
+RETURNS SETOF relatorio_quatro AS '
+BEGIN
+    RETURN QUERY SELECT 
+        PES.nome AS "Nome",
+        PES.idade AS "Idade",
+        PES.sexo AS "Gênero",
+        PES.cidade||'' - ''||PES.estado||'' - ''||PES.pais AS "Endereço Completo",
+        AMO."data" AS "Data da amostra",
+        AMO.resultado AS "Resultado",
+        LAB.nome AS "Laboratório"
+    FROM
+        amostra AMO,
+        paciente PAC,
+        PESSOA PES,
+        laboratorio LAB
+    WHERE
+        PES.id_pessoa = PAC.id_paciente AND
+        AMO.id_paciente = PAC.id_paciente AND
+        LAB.id_laboratorio = AMO.id_laboratorio;
+END;
+'
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION historico_laboratorios()
+RETURNS SETOF relatorio_cinco AS '
+BEGIN
+    RETURN QUERY SELECT 
+        LAB.nome AS "Nome",
+        LAB.qtd_pesquisadores AS "Qtde. Pesquisadores",
+        LAB.cidade||'' - ''||LAB.estado||'' - ''||LAB.pais AS "Endereço Completo",
+        count(AMO.id_laboratorio) AS "Quantidade de amostras recebidas"
+    FROM
+        laboratorio LAB,
+        amostra AMO
+    WHERE
+        AMO.id_laboratorio = LAB.id_laboratorio
+    GROUP BY LAB.nome, LAB.qtd_pesquisadores, LAB.cidade, LAB.estado, LAB.pais
+    ORDER BY LAB.nome;
+END;
+'
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION historico_pesquisadores()
+RETURNS SETOF relatorio_seis AS '
+BEGIN
+    RETURN QUERY SELECT
+        PES.nome AS "Nome",
+        FUN.registro_institucional AS "Registro Institucional",
+        FUN.data_contratacao AS "Data de contratação",
+        AMO.id_amostra AS "Identificador da amostra",
+        AMO."data" AS "Data da amostra",
+        AMO.resultado AS "Resultado da amostra"
+    FROM
+        pessoa PES,
+        pesquisador PSQ,
+        funcionario FUN,
+        amostra AMO
+    WHERE
+        PES.id_pessoa = FUN.id_funcionario AND
+        PSQ.id_pesquisador = FUN.id_funcionario AND
+        AMO.id_pesquisador = PSQ.id_pesquisador
+    ORDER BY FUN.registro_institucional;
 END;
 '
 LANGUAGE plpgsql;
