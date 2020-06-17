@@ -32,6 +32,7 @@ if login != '0':
 
 		if op == '1':
 			print('\n***DASHBOARD***\n')
+			db.showDashboard()
 		elif op == '2':
 			print('\n***RELATÓRIOS***\n')
 			print('\t1 - Histórico Pessoal')

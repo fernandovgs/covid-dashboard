@@ -9,6 +9,7 @@ class PGDatabase:
         """
         self.connection = None
         self.user = ''
+        self.role = ''
 
         try:
             self.connection = psycopg2.connect(database='COVID-19',
@@ -34,6 +35,13 @@ class PGDatabase:
     def getUser(self):
         return self.user
 
+    def getRole(self):
+        return self.role
+    def setRole(self, role):
+        self.role = role
+
+    """ MÉTODOS
+    """
     def loginDatabase(self, login, password):
         cursor = self.getConnection().cursor()
 
@@ -44,6 +52,12 @@ class PGDatabase:
         if result[0] == True:
             print('Usuário {} logado!'.format(login))
             self.setUser(login)
+
+            user = [self.getUser()]
+            cursor.callproc('obter_papel', (user))
+            role = cursor.fetchone()
+            self.setRole(role[0])
+
             return True
 
         return False
@@ -157,4 +171,50 @@ class PGDatabase:
             print('\tData da Amostra: {}'.format(row[4]))
             print('\tResultado: {}'.format(row[5]))
 
+    def showDashboard(self):
+        cursor = self.getConnection().cursor()
 
+        ''' casos positivos '''
+        cursor.callproc('total_positivos')
+        result = cursor.fetchone()
+        print('\tTotal de casos positivos: {}'.format(result[0]))
+
+        ''' casos suspeitos '''
+        cursor.callproc('total_suspeitos')
+        result = cursor.fetchone()
+        print('\tTotal de casos suspeitos: {}'.format(result[0]))
+
+        ''' hospitais '''
+        cursor.callproc('hospitais_com_mais_pacientes_mes')
+        result = cursor.fetchall()
+        print('\tHospitais com mais pacientes no mês:')
+        for row in result:
+            print('\t\t{} - {}'.format(row[0], row[1]))
+
+        ''' laboratórios '''
+        cursor.callproc('laboratorios_com_mais_analises_mes')
+        result = cursor.fetchall()
+
+        print('\tLaboratórios com mais análises no mês:')
+        for row in result:
+            print('\t\t{} - {}'.format(row[0], row[1]))
+
+
+
+        ''' cidades - casos positivos '''
+        cursor.callproc('laboratorios_casos_positivos')
+        result = cursor.fetchall()
+        
+        print('\t20 cidades com mais casos positivos:')
+        for row in result:
+            print('\t\t{} - {}'.format(row[0], row[1]))
+
+
+
+        ''' cidades - casos suspeitos '''
+        cursor.callproc('laboratorios_casos_suspeitos')
+        result = cursor.fetchall()
+        
+        print('\t20 cidades com mais casos suspeitos:')
+        for row in result:
+            print('\t\t{} - {}'.format(row[0], row[1]))

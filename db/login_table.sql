@@ -5,6 +5,7 @@ DROP SEQUENCE IF EXISTS Log_Acesso_seq;
 DROP SEQUENCE IF EXISTS Usuario_seq;
 
 DROP FUNCTION login_banco(tentar_login varchar, tentar_senha varchar);
+DROP FUNCTION obter_papel(papel_login varchar);
 
 -- Add extension for encryption
 CREATE EXTENSION pgcrypto;
@@ -71,3 +72,15 @@ CREATE OR REPLACE FUNCTION login_banco(tentar_login varchar, tentar_senha varcha
 	END;
 '
 LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION obter_papel(papel_login varchar) RETURNS VARCHAR AS '
+	DECLARE
+		papel_obtido varchar;
+	BEGIN
+		papel_obtido := (
+			SELECT papel FROM Usuario WHERE login = papel_login
+		);
+		RETURN papel_obtido;
+	END;
+'
+LANGUAGE plpgsql; 
