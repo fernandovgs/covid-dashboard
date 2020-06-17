@@ -10,8 +10,10 @@ sudo-generate-login:
 sudo-reports-procedures:
 	sudo PGPASSWORD=postgres psql --host=localhost --port=5432 -U postgres -d COVID-19 < db/reports_procedures.sql
 sudo-generate-simulations:
-	sudo PGPASSWORD=postgres psql --host=localhost --port=5432 -U postgres -d COVID-19 < db/simulations.sql	
-sudo-db: sudo-create-database sudo-create-schema sudo-generate-data sudo-generate-login sudo-reports-procedures sudo-generate-simulations
+	sudo PGPASSWORD=postgres psql --host=localhost --port=5432 -U postgres -d COVID-19 < db/simulations.sql
+sudo-dashboard:
+	sudo PGPASSWORD=postgres psql --host=localhost --port=5432 -U postgres -d COVID-19 < db/dashboard.sql	
+sudo-db: sudo-create-database sudo-create-schema sudo-generate-data sudo-generate-login sudo-reports-procedures sudo-generate-simulations sudo-dashboard
 
 ## With superuser
 create-database:
@@ -25,5 +27,7 @@ generate-login:
 reports-procedures:
 	PGPASSWORD=postgres psql --host=localhost --port=5432 -U postgres -d COVID-19 < db/reports_procedures.sql	
 generate-simulations:
-	PGPASSWORD=postgres psql --host=localhost --port=5432 -U postgres -d COVID-19 < db/simulations.sql	
-db: create-database create-schema generate-data generate-login reports-procedures generate-simulations
+	PGPASSWORD=postgres psql --host=localhost --port=5432 -U postgres -d COVID-19 < db/simulations.sql
+dashboard:
+	PGPASSWORD=postgres psql --host=localhost --port=5432 -U postgres -d COVID-19 < db/dashboard.sql	
+db: create-database create-schema generate-data generate-login reports-procedures generate-simulations dashboard
