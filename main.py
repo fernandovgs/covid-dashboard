@@ -34,6 +34,28 @@ if login != '0':
 			print('\n***DASHBOARD***\n')
 		elif op == '2':
 			print('\n***RELATÓRIOS***\n')
+			print('\t1 - Histórico Pessoal')
+			print('\t2 - Histórico dos Hospitais')
+			print('\t3 - Histórico de Atendimento dos municípios')
+			print('\t4 - Histórico de Amostras')
+			print('\t5 - Histórico de Laboratórios')
+			print('\t6 - Histórico de Pesquisadores')
+
+			opRelatorios = input('\n\tOpção: ')
+
+			if opRelatorios == '1':
+				db.reportOne()
+			elif opRelatorios == '2':
+				db.reportTwo()
+			elif opRelatorios == '3':
+				db.reportThree()
+			elif opRelatorios == '4':
+				db.reportFour()
+			elif opRelatorios == '5':
+				db.reportFive()
+			elif opRelatorios == '6':
+				db.reportSix()
+
 		elif op == '3':
 			print('\n***SIMULAÇÕES***\n')
 		elif op == '0':

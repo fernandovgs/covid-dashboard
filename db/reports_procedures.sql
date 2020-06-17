@@ -16,7 +16,7 @@ CREATE TYPE relatorio_um AS
     (nome varchar, idade int, genero char, data_nasc date, telefones text, endereco text, hospital varchar);
 
 CREATE TYPE relatorio_dois AS 
-    (nome varchar, endereco text, qtde_funcionarios int, qtde_leitos int, qtde_atendimentos int, qtde_pacientes int);
+    (nome varchar, endereco text, qtde_funcionarios int, qtde_leitos int, qtde_atendimentos bigint, qtde_pacientes bigint);
 
 CREATE TYPE relatorio_tres AS 
     (cidade character(60),
