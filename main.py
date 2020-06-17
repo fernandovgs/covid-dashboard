@@ -36,30 +36,53 @@ if login != '0':
 		elif op == '2':
 			print('\n***RELATÓRIOS***\n')
 			print('\t1 - Histórico Pessoal')
-			print('\t2 - Histórico dos Hospitais')
-			print('\t3 - Histórico de Atendimento dos municípios')
-			print('\t4 - Histórico de Amostras')
-			print('\t5 - Histórico de Laboratórios')
-			print('\t6 - Histórico de Pesquisadores')
+			if db.getRole() == ADMIN or db.getRole() == MEDICINE:
+				print('\t2 - Histórico dos Hospitais')
+			if db.getRole() == ADMIN or db.getRole() == MEDICINE:
+				print('\t3 - Histórico de Atendimento dos municípios')
+			if db.getRole() == ADMIN or db.getRole() == RESEARCH:
+				print('\t4 - Histórico de Amostras')
+			if db.getRole() == ADMIN or db.getRole() == RESEARCH:
+				print('\t5 - Histórico de Laboratórios')
+			if db.getRole() == ADMIN or db.getRole() == RESEARCH:
+				print('\t6 - Histórico de Pesquisadores')
 
 			opRelatorios = input('\n\tOpção: ')
 
 			if opRelatorios == '1':
 				db.reportOne()
 			elif opRelatorios == '2':
-				db.reportTwo()
+				if db.getRole() == ADMIN or db.getRole() == MEDICINE:
+					db.reportTwo()
+				else:
+					print('Opção inválida!')
 			elif opRelatorios == '3':
-				db.reportThree()
+				if db.getRole() == ADMIN or db.getRole() == MEDICINE:
+					db.reportThree()
+				else:
+					print('Opção inválida!')
 			elif opRelatorios == '4':
-				db.reportFour()
+				if db.getRole() == ADMIN or db.getRole() == RESEARCH:
+					db.reportFour()
+				else:
+					print('Opção inválida!')
 			elif opRelatorios == '5':
-				db.reportFive()
+				if db.getRole() == ADMIN or db.getRole() == RESEARCH:
+					db.reportFive()
+				else:
+					print('Opção inválida!')
 			elif opRelatorios == '6':
-				db.reportSix()
+				if db.getRole() == ADMIN or db.getRole() == RESEARCH:
+					db.reportSix()
+				else:
+					print('Opção inválida!')
+			else:
+				print('Opção inválida!')
 
 		elif op == '3':
 			print('\n***SIMULAÇÕES***\n')
 		elif op == '0':
+			db.destroySimulations()
 			print('Saindo do programa...')
 		else:
 			print('Opção inválida!')

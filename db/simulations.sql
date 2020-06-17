@@ -1,34 +1,34 @@
--- DROP FUNCTION simulacao_medicina();
--- DROP FUNCTION destruir_simulacao_medicina();
--- DROP FUNCTION simulacao_pesquisa();
--- DROP FUNCTION destruir_simulacao_pesquisa();
--- DROP FUNCTION simulacao_medicina_criar_prontuario(id_pac int);
--- DROP FUNCTION simulacao_medicina_criar_atendimento(
---     nova_data date,
---     novo_grau_avaliacao char,
---     novas_observacoes varchar,
---     id_med int,
---     id_pac int,
---     id_pro int
--- );
--- DROP FUNCTION simulacao_medicina_editar_atendimento(
---     id_ate int,
---     nova_data date,
---     novo_grau_avaliacao char,
---     novas_observacoes varchar
--- );
--- DROP FUNCTION simulacao_pesquisa_criar_amostra(
---     nova_data date,
---     result char,
---     id_lab int,
---     id_pac int,
---     id_psq int
--- );
--- DROP FUNCTION simulacao_pesquisa_editar_amostra(
---     id_amo int,
---     nova_data date,
---     result char
--- );
+DROP FUNCTION simulacao_medicina();
+DROP FUNCTION destruir_simulacao_medicina();
+DROP FUNCTION simulacao_pesquisa();
+DROP FUNCTION destruir_simulacao_pesquisa();
+DROP FUNCTION simulacao_medicina_criar_prontuario(id_pac int);
+DROP FUNCTION simulacao_medicina_criar_atendimento(
+    nova_data date,
+    novo_grau_avaliacao char,
+    novas_observacoes varchar,
+    id_med int,
+    id_pac int,
+    id_pro int
+);
+DROP FUNCTION simulacao_medicina_editar_atendimento(
+    id_ate int,
+    nova_data date,
+    novo_grau_avaliacao char,
+    novas_observacoes varchar
+);
+DROP FUNCTION simulacao_pesquisa_criar_amostra(
+    nova_data date,
+    result char,
+    id_lab int,
+    id_pac int,
+    id_psq int
+);
+DROP FUNCTION simulacao_pesquisa_editar_amostra(
+    id_amo int,
+    nova_data date,
+    result char
+);
 
 CREATE OR REPLACE FUNCTION simulacao_medicina() RETURNS VOID AS '
     DECLARE

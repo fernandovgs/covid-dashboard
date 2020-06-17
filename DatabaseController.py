@@ -1,5 +1,9 @@
 import psycopg2
 
+ADMIN = 'ADMIN'
+MEDICINE = 'MEDICINA'
+RESEARCH = 'PESQUISA'
+
 class PGDatabase:
     """
     """
@@ -58,6 +62,13 @@ class PGDatabase:
             role = cursor.fetchone()
             self.setRole(role[0])
 
+            if self.getRole() == ADMIN or self.getRole() == MEDICINE:
+                cursor.callproc('simulacao_medicina')
+                cursor.fetchall()
+            if self.getRole() == ADMIN or self.getRole() == RESEARCH:
+                cursor.callproc('simulacao_pesquisa')
+                cursor.fetchall()
+            
             return True
 
         return False
@@ -218,3 +229,11 @@ class PGDatabase:
         print('\t20 cidades com mais casos suspeitos:')
         for row in result:
             print('\t\t{} - {}'.format(row[0], row[1]))
+
+    def destroySimulations(self):
+        cursor = self.getConnection().cursor()
+
+        if self.getRole() == ADMIN or self.getRole() == MEDICINE:
+            cursor.callproc('destruir_simulacao_medicina')
+        if self.getRole() == ADMIN or self.getRole() == RESEARCH:
+            cursor.callproc('destruir_simulacao_pesquisa')

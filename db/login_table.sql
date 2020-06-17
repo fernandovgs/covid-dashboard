@@ -41,6 +41,12 @@ CREATE SEQUENCE log_acesso_seq START 1;
 INSERT INTO Usuario (id_usuario, papel, login, senha)
 VALUES (nextval('usuario_seq'), 'ADMIN', 'adminCovid', crypt('superAdmin', gen_salt('md5')));
 
+INSERT INTO Usuario (id_usuario, papel, login, senha)
+VALUES (nextval('usuario_seq'), 'MEDICINA', 'medCovid', crypt('superMed', gen_salt('md5')));
+
+INSERT INTO Usuario (id_usuario, papel, login, senha)
+VALUES (nextval('usuario_seq'), 'PESQUISA', 'labCovid', crypt('superLab', gen_salt('md5')));
+
 INSERT INTO Log_Acesso (id_log, id_usuario, data_acesso)
 VALUES (nextval('log_acesso_seq'), 1, CURRENT_TIMESTAMP);
 
