@@ -70,7 +70,7 @@ class PGDatabase:
                 cursor.fetchall()
             
             return True
-
+        print('Algo deu errado. Tente novamente')
         return False
 
     def reportOne(self):
