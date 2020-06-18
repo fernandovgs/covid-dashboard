@@ -61,7 +61,7 @@ CREATE OR REPLACE FUNCTION login_banco(tentar_login varchar, tentar_senha varcha
 		WHERE 	U.login = tentar_login;
 
 		IF has_login IS NOT NULL THEN
-			SELECT U.senha = crypt(''superAdmin'', U.senha) INTO has_logged FROM Usuario U WHERE U.id_usuario = has_login;
+			SELECT U.senha = crypt(tentar_senha, U.senha) INTO has_logged FROM Usuario U WHERE U.id_usuario = has_login;
 
 			IF has_logged = TRUE THEN
 

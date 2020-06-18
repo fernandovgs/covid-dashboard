@@ -11,17 +11,10 @@ class PGDatabase:
     def __init__(self):
         """
         """
-        self.connection = None
         self.user = ''
         self.role = ''
 
         try:
-            self.connection = psycopg2.connect(database='COVID-19',
-                             user = 'postgres',
-                             password = 'postgres',
-                             host = '127.0.0.1',
-                             port = '5432')
-
             print('Conectado com o banco de dados!\n\n')
         except Exception as e:
             print('Não foi possível se conectar ao banco de dados!')
@@ -30,9 +23,6 @@ class PGDatabase:
 
     """ GETTERS E SETTERS
     """
-    def getConnection(self):
-        return self.connection
-
     def setUser(self, user):
         self.user = user
 
@@ -46,8 +36,20 @@ class PGDatabase:
 
     """ MÉTODOS
     """
+    def getConnection(self):
+        connection = psycopg2.connect(database='COVID-19',
+                                      user = 'postgres',
+                                      password = 'postgres',
+                                      host = '127.0.0.1',
+                                      port = '5432')
+
+        return connection
+
+
+
     def loginDatabase(self, login, password):
-        cursor = self.getConnection().cursor()
+        connection = self.getConnection()
+        cursor = connection.cursor()
 
         cursor.callproc('login_banco', (login, password))
 
@@ -69,12 +71,17 @@ class PGDatabase:
                 cursor.callproc('simulacao_pesquisa')
                 cursor.fetchall()
             
+            connection.commit()
+            connection.close()
             return True
 
+        print('\tAlgo deu errado. Tente novamente')
+        connection.close()
         return False
 
     def reportOne(self):
-        cursor = self.getConnection().cursor()
+        connection = self.getConnection() 
+        cursor = connection.cursor()
 
         cursor.callproc('historico_pessoal')
 
@@ -90,9 +97,11 @@ class PGDatabase:
             print('\tEndereço: {}'.format(row[5]))
             print('\tHospital: {}'.format(row[6]))
 
+        connection.close()
 
     def reportTwo(self):
-        cursor = self.getConnection().cursor()
+        connection = self.getConnection() 
+        cursor = connection.cursor()
 
         cursor.callproc('historico_hospital')
 
@@ -106,10 +115,12 @@ class PGDatabase:
             print('\tQuantidade de leitos: {}'.format(str(row[3])))
             print('\tQuantidade de atendimentos: {}'.format(str(row[4])))
             print('\tQuantidade de pacientes: {}'.format(str(row[5])))
-
+        
+        connection.close()
 
     def reportThree(self):
-        cursor = self.getConnection().cursor()
+        connection = self.getConnection() 
+        cursor = connection.cursor()
 
         cursor.callproc('historico_municipios')
 
@@ -133,8 +144,11 @@ class PGDatabase:
             print('\tQuantidade de atendimentos - nov: {}'.format(str(row[13])))
             print('\tQuantidade de atendimentos - dez: {}'.format(str(row[14])))
 
+        connection.close()
+
     def reportFour(self):
-        cursor = self.getConnection().cursor()
+        connection = self.getConnection() 
+        cursor = connection.cursor()
 
         cursor.callproc('historico_amostras')
 
@@ -150,9 +164,11 @@ class PGDatabase:
             print('\tResultado: {}'.format(row[5]))
             print('\tLaboratorio: {}'.format(row[6]))
 
+        connection.close()
 
     def reportFive(self):
-        cursor = self.getConnection().cursor()
+        connection = self.getConnection() 
+        cursor = connection.cursor()
 
         cursor.callproc('historico_laboratorios')
 
@@ -165,9 +181,11 @@ class PGDatabase:
             print('\tEndereço: {}'.format(row[2]))
             print('\tAmostras: {}'.format(row[3]))
 
+        connection.close()
 
     def reportSix(self):
-        cursor = self.getConnection().cursor()
+        connection = self.getConnection() 
+        cursor = connection.cursor()
 
         cursor.callproc('historico_pesquisadores')
 
@@ -182,8 +200,11 @@ class PGDatabase:
             print('\tData da Amostra: {}'.format(row[4]))
             print('\tResultado: {}'.format(row[5]))
 
+        connection.close()
+
     def showDashboard(self):
-        cursor = self.getConnection().cursor()
+        connection = self.getConnection() 
+        cursor = connection.cursor()
 
         ''' casos positivos '''
         cursor.callproc('total_positivos')
@@ -230,10 +251,16 @@ class PGDatabase:
         for row in result:
             print('\t\t{} - {}'.format(row[0], row[1]))
 
+        connection.close()
+
     def destroySimulations(self):
-        cursor = self.getConnection().cursor()
+        connection = self.getConnection() 
+        cursor = connection.cursor()
 
         if self.getRole() == ADMIN or self.getRole() == MEDICINE:
             cursor.callproc('destruir_simulacao_medicina')
         if self.getRole() == ADMIN or self.getRole() == RESEARCH:
             cursor.callproc('destruir_simulacao_pesquisa')
+
+        connection.commit()
+        connection.close()
