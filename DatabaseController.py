@@ -264,3 +264,98 @@ class PGDatabase:
 
         connection.commit()
         connection.close()
+
+    def restoreSimulations(self):
+        connection = self.getConnection() 
+        cursor = connection.cursor()
+
+        if self.getRole() == ADMIN or self.getRole() == MEDICINE:
+            cursor.callproc('destruir_simulacao_medicina')
+            cursor.callproc('simulacao_medicina')
+        if self.getRole() == ADMIN or self.getRole() == RESEARCH:
+            cursor.callproc('destruir_simulacao_pesquisa')
+            cursor.callproc('simulacao_pesquisa')
+
+        connection.commit()
+        connection.close()
+
+        print('Valores restaurados!')
+
+    def simulateCreateMedicalRecord(self):
+        id_pac = input('\tInforme o id do paciente a se criar o prontuário: ')
+
+        connection = self.getConnection() 
+        cursor = connection.cursor()
+
+        cursor.callproc('simulacao_medicina_criar_prontuario', (id_pac))
+
+        connection.commit()
+        connection.close()
+
+        print('Dados criados com sucesso!')
+
+    def simulateCreateMedicalCare(self):
+        id_pac = input('\tInforme o id do paciente a se criar o atendimento: ')
+        id_med = input('\tInforme o id do médico responsável pelo atendimento: ')
+        id_pro = input('\tInforme o id do prontuário de atendimento: ')
+        grade = input('\tInforme o grau de avaliação do atendimento (I, A, B, M): ')
+        obs = input('\tInforme as observações do atendimento: ')
+        new_date = input('\tInforme a data do atendimento (YYYY-MM-DD): ')
+
+        connection = self.getConnection() 
+        cursor = connection.cursor()
+
+        cursor.callproc('simulacao_medicina_criar_atendimento', (new_date, grade, obs, id_med, id_pac, id_pro))
+
+        connection.commit()
+        connection.close()
+
+        print('Dados criados com sucesso!')
+
+    def simulateEditMedicalCare(self):
+        id_ate = input('\tInforme o id do atendimento: ')
+        grade = input('\tInforme o novo grau de avaliação do atendimento (I, A, B, M): ')
+        obs = input('\tInforme as novas observações do atendimento: ')
+        new_date = input('\tInforme a nova data do atendimento (YYYY-MM-DD): ')
+
+        connection = self.getConnection() 
+        cursor = connection.cursor()
+
+        cursor.callproc('simulacao_medicina_editar_atendimento', (id_ate, new_date, grade, obs))
+
+        connection.commit()
+        connection.close()
+
+        print('Dados editados com sucesso!')
+
+    def simulateCreateSample(self):
+        id_lab = input('\tInforme o id do laboratório: ')
+        id_pac = input('\tInforme o id do paciente: ')
+        id_res = input('\tInforme o id do pesquisador: ')
+        new_date = input('\tInforme a data da coleta (YYYY-MM-DD): ')
+        result = input('\tInforme o resultado (P, N): ')
+
+        connection = self.getConnection() 
+        cursor = connection.cursor()
+
+        cursor.callproc('simulacao_pesquisa_criar_amostra', (new_date, result, id_lab, id_pac, id_res))
+
+        connection.commit()
+        connection.close()
+
+        print('Dados criados com sucesso!')
+
+    def simulateEditSample(self):
+        id_sam = input('\tInforme o id da amostra:')
+        new_date = input('\tInforme a data da coleta (YYYY-MM-DD): ')
+        result = input('\tInforme o resultado (P, N): ')
+
+        connection = self.getConnection() 
+        cursor = connection.cursor()
+
+        cursor.callproc('simulacao_pesquisa_editar_amostra', (id_sam, new_date, result))
+
+        connection.commit()
+        connection.close()
+
+        print('Dados editados com sucesso!')

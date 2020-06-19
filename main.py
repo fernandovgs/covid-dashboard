@@ -81,6 +81,52 @@ if login != '0':
 
         elif op == '3':
             print('\n***SIMULAÇÕES***\n')
+            if db.getRole() == ADMIN or db.getRole() == MEDICINE:
+                print('\t1 - Novo prontuário')
+            if db.getRole() == ADMIN or db.getRole() == MEDICINE:
+                print('\t2 - Novo atendimento')
+            if db.getRole() == ADMIN or db.getRole() == RESEARCH:
+                print('\t3 - Alteração de atendimento')
+            if db.getRole() == ADMIN or db.getRole() == RESEARCH:
+                print('\t4 - Nova amostra')
+            if db.getRole() == ADMIN or db.getRole() == RESEARCH:
+                print('\t5 - Alteração de amostra')
+            print('\t6 - Restaurar valores')
+
+            opSim = input('\n\tOpção: ')
+
+
+            if opSim == '1':
+                if db.getRole() == ADMIN or db.getRole() == MEDICINE:
+                    db.simulateCreateMedicalRecord()
+                else:
+                    print('Opção inválida!')
+            elif opSim == '2':
+                if db.getRole() == ADMIN or db.getRole() == MEDICINE:
+                    db.simulateCreateMedicalCare()
+                else:
+                    print('Opção inválida!')
+            elif opSim == '3':
+                if db.getRole() == ADMIN or db.getRole() == MEDICINE:
+                    db.simulateEditMedicalCare()
+                else:
+                    print('Opção inválida!')
+            elif opSim == '4':
+                if db.getRole() == ADMIN or db.getRole() == RESEARCH:
+                    db.simulateCreateSample()
+                else:
+                    print('Opção inválida!')
+            elif opSim == '5':
+                if db.getRole() == ADMIN or db.getRole() == RESEARCH:
+                    db.simulateEditSample()
+                else:
+                    print('Opção inválida!')
+            elif opSim == '6':
+                db.restoreSimulations()
+            else:
+                print('Opção inválida!')
+                
+
         elif op == '0':
             db.destroySimulations()
         else:
