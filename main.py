@@ -85,7 +85,7 @@ if login != '0':
                 print('\t1 - Novo prontuário')
             if db.getRole() == ADMIN or db.getRole() == MEDICINE:
                 print('\t2 - Novo atendimento')
-            if db.getRole() == ADMIN or db.getRole() == RESEARCH:
+            if db.getRole() == ADMIN or db.getRole() == MEDICINE:
                 print('\t3 - Alteração de atendimento')
             if db.getRole() == ADMIN or db.getRole() == RESEARCH:
                 print('\t4 - Nova amostra')
