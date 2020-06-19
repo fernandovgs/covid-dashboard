@@ -77,6 +77,7 @@ class PGDatabase:
 
         print('\tAlgo deu errado. Tente novamente')
         connection.close()
+        
         return False
 
     def reportOne(self):
