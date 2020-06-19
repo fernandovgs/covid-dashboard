@@ -83,7 +83,7 @@ BEGIN
         HOS.qtd_leitos AS "Quantidade de leitos",
         count(ATE.id_paciente) AS "Quantidade de atendimentos registrados",
         count(DISTINCT ATE.id_paciente) AS "Quantidade de pacientes distintos atendidos"
-    FROM hospital HOS, paciente PAC, atendimento ATE
+    FROM hospital HOS, paciente PAC, atendimento_sim ATE
     WHERE
         HOS.id_hospital = PAC.id_hospital AND
         PAC.id_paciente = ATE.id_paciente
@@ -126,7 +126,7 @@ BEGIN
             FROM
                 hospital HOS,
                 paciente PAC,
-                atendimento ATE
+                atendimento_sim ATE
             WHERE
                 HOS.id_hospital = PAC.id_hospital AND
                 ATE.id_paciente = PAC.id_paciente
@@ -140,7 +140,7 @@ BEGIN
             FROM
                 hospital HOS,
                 paciente PAC,
-                atendimento ATE_JAN
+                atendimento_sim ATE_JAN
             WHERE
                 HOS.id_hospital = PAC.id_hospital AND
                 ATE_JAN.id_paciente = PAC.id_paciente AND
@@ -156,7 +156,7 @@ BEGIN
             FROM
                 hospital HOS,
                 paciente PAC,
-                atendimento ATE_FEV
+                atendimento_sim ATE_FEV
             WHERE
                 HOS.id_hospital = PAC.id_hospital AND
                 ATE_FEV.id_paciente = PAC.id_paciente AND
@@ -172,7 +172,7 @@ BEGIN
             FROM
                 hospital HOS,
                 paciente PAC,
-                atendimento ATE_MAR
+                atendimento_sim ATE_MAR
             WHERE
                 HOS.id_hospital = PAC.id_hospital AND
                 ATE_MAR.id_paciente = PAC.id_paciente AND
@@ -188,7 +188,7 @@ BEGIN
             FROM
                 hospital HOS,
                 paciente PAC,
-                atendimento ATE_ABR
+                atendimento_sim ATE_ABR
             WHERE
                 HOS.id_hospital = PAC.id_hospital AND
                 ATE_ABR.id_paciente = PAC.id_paciente AND
@@ -204,7 +204,7 @@ BEGIN
             FROM
                 hospital HOS,
                 paciente PAC,
-                atendimento ATE_MAI
+                atendimento_sim ATE_MAI
             WHERE
                 HOS.id_hospital = PAC.id_hospital AND
                 ATE_MAI.id_paciente = PAC.id_paciente AND
@@ -220,7 +220,7 @@ BEGIN
             FROM
                 hospital HOS,
                 paciente PAC,
-                atendimento ATE_JUN
+                atendimento_sim ATE_JUN
             WHERE
                 HOS.id_hospital = PAC.id_hospital AND
                 ATE_JUN.id_paciente = PAC.id_paciente AND
@@ -236,7 +236,7 @@ BEGIN
             FROM
                 hospital HOS,
                 paciente PAC,
-                atendimento ATE_JUL
+                atendimento_sim ATE_JUL
             WHERE
                 HOS.id_hospital = PAC.id_hospital AND
                 ATE_JUL.id_paciente = PAC.id_paciente AND
@@ -252,7 +252,7 @@ BEGIN
             FROM
                 hospital HOS,
                 paciente PAC,
-                atendimento ATE_AGO
+                atendimento_sim ATE_AGO
             WHERE
                 HOS.id_hospital = PAC.id_hospital AND
                 ATE_AGO.id_paciente = PAC.id_paciente AND
@@ -268,7 +268,7 @@ BEGIN
             FROM
                 hospital HOS,
                 paciente PAC,
-                atendimento ATE_SET
+                atendimento_sim ATE_SET
             WHERE
                 HOS.id_hospital = PAC.id_hospital AND
                 ATE_SET.id_paciente = PAC.id_paciente AND
@@ -284,7 +284,7 @@ BEGIN
             FROM
                 hospital HOS,
                 paciente PAC,
-                atendimento ATE_OUT
+                atendimento_sim ATE_OUT
             WHERE
                 HOS.id_hospital = PAC.id_hospital AND
                 ATE_OUT.id_paciente = PAC.id_paciente AND
@@ -300,7 +300,7 @@ BEGIN
             FROM
                 hospital HOS,
                 paciente PAC,
-                atendimento ATE_NOV
+                atendimento_sim ATE_NOV
             WHERE
                 HOS.id_hospital = PAC.id_hospital AND
                 ATE_NOV.id_paciente = PAC.id_paciente AND
@@ -316,7 +316,7 @@ BEGIN
             FROM
                 hospital HOS,
                 paciente PAC,
-                atendimento ATE_DEZ
+                atendimento_sim ATE_DEZ
             WHERE
                 HOS.id_hospital = PAC.id_hospital AND
                 ATE_DEZ.id_paciente = PAC.id_paciente AND
@@ -340,7 +340,7 @@ BEGIN
         AMO.resultado AS "Resultado",
         LAB.nome AS "Laboratório"
     FROM
-        amostra AMO,
+        amostra_sim AMO,
         paciente PAC,
         PESSOA PES,
         laboratorio LAB
@@ -362,7 +362,7 @@ BEGIN
         count(AMO.id_laboratorio) AS "Quantidade de amostras recebidas"
     FROM
         laboratorio LAB,
-        amostra AMO
+        amostra_sim AMO
     WHERE
         AMO.id_laboratorio = LAB.id_laboratorio
     GROUP BY LAB.nome, LAB.qtd_pesquisadores, LAB.cidade, LAB.estado, LAB.pais
@@ -385,7 +385,7 @@ BEGIN
         pessoa PES,
         pesquisador PSQ,
         funcionario FUN,
-        amostra AMO
+        amostra_sim AMO
     WHERE
         PES.id_pessoa = FUN.id_funcionario AND
         PSQ.id_pesquisador = FUN.id_funcionario AND
